@@ -14,13 +14,13 @@ return new class extends Migration
         Schema::create('blogs', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->string('title')->unique();
-            $table->string('slug')->unique();
+            $table->string('name')->unique();
+            $table->string('slug')->nullable()->unique();
             $table->unsignedTinyInteger('read_time');
             $table->foreignId('category_id')->constrained()->onDelete('cascade');
             $table->text('description');
             $table->string('primary_image');
-            $table->boolean('is_published')->default(0);
+            $table->tinyInteger('is_published')->default(1);
             $table->tinyInteger('status')->default(1);
             $table->text('body');
             $table->dateTime('published_at')->nullable();

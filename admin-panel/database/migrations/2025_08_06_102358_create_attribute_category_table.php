@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('attribute_category', function (Blueprint $table) {
             $table->foreignId('attribute_id')->constrained()->onDelete('cascade');
             $table->foreignId('category_id')->constrained()->onDelete('cascade');
-            $table->boolean('is_filter')->default(0);
-            $table->boolean('is_variation')->default(0);
+            $table->tinyInteger('is_filter')->default(0);
+            $table->tinyInteger('is_variation')->default(0);
             $table->primary(['attribute_id' , 'category_id']);
             $table->timestamps();
         });

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('comments', function (Blueprint $table) {
             $table->id();
             $table->text('body');
-            $table->boolean('is_published');
+            $table->tinyInteger('is_published')->default(0);
             $table->foreignId('user_id')->constrained()->onDelete('cascade');;
             $table->foreignId('parent_id')->nullable()->constrained('comments')->onDelete('cascade');
             $table->morphs('commentable');
