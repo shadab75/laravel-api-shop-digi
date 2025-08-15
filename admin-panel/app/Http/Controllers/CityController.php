@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\CityResource;
 use App\Models\City;
 use Illuminate\Http\Request;
 
-class CityController extends Controller
+class CityController extends ApiController
 {
     /**
      * Display a listing of the resource.
@@ -13,6 +14,12 @@ class CityController extends Controller
     public function index()
     {
         //
+        $cities = City::query()->with('province')->paginate(10);
+        return $this->successResponse([
+           'cities'=>CityResource::collection($cities),
+           'links'=>CityResource::collection($cities)->response()->getData()->links,
+           'meta'=>CityResource::collection($cities)->response()->getData()->meta,
+        ]);
     }
 
     /**

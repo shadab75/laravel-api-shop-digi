@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ProductAttribute;
 use Illuminate\Http\Request;
 
-class PoductAttributeController extends Controller
+class ProductAttributeController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -26,9 +26,17 @@ class PoductAttributeController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store($attributes,$product)
     {
         //
+
+        foreach ($attributes as $attr){
+            ProductAttribute::query()->create([
+               'product_id'=>$product->id,
+               'attribute_id'=>$attr['id'],
+                'value'=>$attr['value']
+            ]);
+        }
     }
 
     /**
@@ -50,9 +58,15 @@ class PoductAttributeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, ProductAttribute $poductAttribute)
+    public function update($attributeIds)
     {
         //
+        foreach ($attributeIds as $key=>$value){
+           $productAttribute=ProductAttribute::query()->findOrFail($key);
+            $productAttribute->update([
+                'value'=>$value
+            ]);
+        }
     }
 
     /**

@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\CityResource;
+use App\Http\Resources\ProvinceResource;
 use App\Models\Province;
 use Illuminate\Http\Request;
 
-class ProvinceController extends Controller
+class ProvinceController extends ApiController
 {
     /**
      * Display a listing of the resource.
@@ -13,6 +15,22 @@ class ProvinceController extends Controller
     public function index()
     {
         //
+        $provinces = Province::query()->paginate(10);
+        return $this->successResponse([
+           'provinces'=>ProvinceResource::collection($provinces),
+           'links'=>ProvinceResource::collection($provinces)->response()->getData()->links,
+           'meta'=>ProvinceResource::collection($provinces)->response()->getData()->meta,
+        ]);
+    }
+
+    public function cities(Province $province)
+    {
+        $cities = $province->cities()->paginate(10);
+        return $this->successResponse([
+           'cities'=>CityResource::collection($cities),
+           'links'=>CityResource::collection($cities)->response()->getData()->links,
+           'meta'=>CityResource::collection($cities)->response()->getData()->meta,
+        ]);
     }
 
     /**

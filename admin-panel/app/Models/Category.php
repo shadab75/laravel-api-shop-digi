@@ -37,8 +37,7 @@ class Category extends Model
         return $this->morphTo();
     }
 
-    public function attributes()
-    {
-        return $this->belongsToMany(Attribute::class,'attribute_category');
+    public function attributes(){
+        return $this->belongsToMany(Attribute::class, 'attribute_category')->withPivot('is_filter', 'is_variation');
     }
 }

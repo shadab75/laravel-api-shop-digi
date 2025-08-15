@@ -31,6 +31,9 @@ class StoreCategoryRequest extends FormRequest
             'categoryable_id'=>'required|integer',
             'attribute_ids'=>'required|array',
             'attribute_ids.*'=>'exists:attributes,id',
+            'attribute_is_filter_ids'=>'required|array',
+            'attribute_is_filter_ids.*'=>'exists:attributes,id',
+            'variation_id'=>'required|exists:attributes,id'
         ];
     }
 }

@@ -16,6 +16,9 @@ return new class extends Migration
             $table->foreignId('attribute_id')->constrained()->onDelete('cascade');
             $table->foreignId('product_id')->constrained()->onDelete('cascade');
             $table->string('value');
+            $table->unsignedInteger('price')->default(0);
+            $table->unsignedInteger('quantity')->default(0);
+            $table->string('sku')->nullable();
             $table->unsignedInteger('sale_price')->nullable();
             $table->timestamp('date_on_sale_from')->nullable();
             $table->timestamp('date_on_sale_to')->nullable();

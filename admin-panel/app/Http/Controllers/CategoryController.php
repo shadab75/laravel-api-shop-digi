@@ -7,6 +7,7 @@ use App\Http\Requests\Category\UpdateCategoryRequest;
 use App\Http\Resources\AttributeCategoryResource;
 use App\Http\Resources\AttributeResource;
 use App\Http\Resources\CategoryResource;
+use App\Models\Attribute;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -49,7 +50,13 @@ class CategoryController extends ApiController
         'categoryable_id'=>$request->categoryable_id,
         'categoryable_type'=>$request->categoryable_type
     ]);
-    $category->attributes()->attach($request->attribute_ids);
+    foreach ($request->attribute_ids as $attributeId){
+    $attribute = Attribute::query()->findOrFail($attributeId);
+    $attribute->categories()->attach($category->id,[
+     'is_filter'=>in_array($attributeId,$request->attribute_is_filter_ids)?1:0,
+     'is_variation'=>$request->variation_id==$attributeId?1:0
+    ]);
+    }
     DB::commit();
     return $this->successResponse(new CategoryResource($category));
     }
@@ -111,7 +118,7 @@ class CategoryController extends ApiController
 
     public function attributes(Category $category)
     {
-        $attributes = $category->attributes;
+        $attributes = $category->attributes()->paginate(10);
         return $this->successResponse(AttributeCategoryResource::collection($attributes));
     }
 }
