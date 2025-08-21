@@ -14,14 +14,16 @@ Route::apiResource('categories', CategoryController::class);
 Route::get('/categories/{category}/children',[CategoryController::class,'children']);
 Route::get('/categories/{category}/parent',[CategoryController::class,'parent']);
 Route::get('/categories/{category}/attributes',[CategoryController::class,'attributes']);
+Route::get('/category-attributes/{category}' ,[CategoryController::class , 'getCategoryAttributes']);
 Route::get('/provinces',[ProvinceController::class,'index']);
 Route::get('/provinces/{province}/cities',[ProvinceController::class,'cities']);
 Route::get('/cities',[CityController::class,'index']);
 Route::get('/cities',[CityController::class,'index']);
-//Route::get('/categories/{category}/product',[CategoryController::class,'product']); //will be written
+Route::get('/categories/{category}/products',[CategoryController::class,'product']);
 Route::apiResource('tags', TagController::class);
 Route::apiResource('brands', BrandController::class);
 Route::apiResource('attributes', AttributeController::class);
 Route::apiResource('coupons', CouponController::class);
 Route::apiResource('products', ProductController::class);
+Route::put('/products/{product}/category-edit',[ProductController::class,'updateCategory']);
 

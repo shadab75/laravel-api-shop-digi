@@ -5,11 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Category\StoreCategoryRequest;
 use App\Http\Requests\Category\UpdateCategoryRequest;
 use App\Http\Resources\AttributeCategoryResource;
-use App\Http\Resources\AttributeResource;
 use App\Http\Resources\CategoryResource;
+use App\Http\Resources\ProductResource;
 use App\Models\Attribute;
 use App\Models\Category;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class CategoryController extends ApiController
@@ -118,7 +117,23 @@ class CategoryController extends ApiController
 
     public function attributes(Category $category)
     {
-        $attributes = $category->attributes()->paginate(10);
-        return $this->successResponse(AttributeCategoryResource::collection($attributes));
+        $attributes = $category->attributes()->wherePivot('is_variation','=',0)->get();
+        $variation = $category->attributes()->wherePivot('is_variation','=',1)->first();
+        return $this->successResponse([
+           'attributes'=>AttributeCategoryResource::collection($attributes),
+           'variations'=>$variation
+        ]);
     }
+
+    public function product(Category $category)
+    {
+        $products =  $category->products()->paginate(10);
+        return $this->successResponse([
+           'products'=>ProductResource::collection($products),
+           'links'=>ProductResource::collection($products)->response()->getData()->links,
+           'meta'=>ProductResource::collection($products)->response()->getData()->meta,
+        ]);
+    }
+
+
 }

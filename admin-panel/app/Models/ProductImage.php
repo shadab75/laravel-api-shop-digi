@@ -8,4 +8,6 @@ class ProductImage extends Model
 {
     //
     protected $guarded=[];
+
+
 }

@@ -70,7 +70,7 @@ class AttributeController extends ApiController
         $attribute->update([
            'name'=>$request->name,
         ]);
-        return $this->successResponse($attribute);
+        return $this->successResponse(new AttributeResource($attribute));
     }
 
     /**

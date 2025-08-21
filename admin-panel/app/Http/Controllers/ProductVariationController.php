@@ -44,7 +44,7 @@ class ProductVariationController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(ProductVariation $poductVariation)
+    public function show(ProductVariation $productVariation)
     {
         //
     }
@@ -52,7 +52,7 @@ class ProductVariationController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(ProductVariation $poductVariation)
+    public function edit(ProductVariation $productVariation)
     {
         //
     }
@@ -60,16 +60,43 @@ class ProductVariationController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, ProductVariation $poductVariation)
+    public function update($variations)
     {
         //
+        foreach ($variations as $variation){
+            $productVariation = ProductVariation::query()->findOrFail($variation['id']);
+            $productVariation->update([
+                'value'        => $variation['value'],
+                'price'        => $variation['price'],
+                'quantity'     => $variation['quantity'],
+                'sale_price'     => $variation['sale_price']??null,
+                'date_on_sale_from'=>$variation['date_on_sale_from']??null,
+                'date_on_sale_to'=>$variation['date_on_sale_to']??null,
+            ]);
+        }
+
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(ProductVariation $poductVariation)
+    public function destroy(ProductVariation $productVariation)
     {
         //
+    }
+
+    public function change($variations,$attribute,$product)
+    {
+        ProductVariation::query()->where('product_id',$product->id)->delete();
+        foreach ($variations as $variation){
+            ProductVariation::query()->create([
+               'attribute_id'=>$attribute['id'],
+               'product_id'=>$product->id,
+               'value'=>$variations['value'],
+               'price'=>$variations['price'],
+               'quantity'=>$variations['value'],
+            ]);
+        }
+
     }
 }

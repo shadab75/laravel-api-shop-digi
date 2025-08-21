@@ -20,6 +20,11 @@ class Attribute extends Model
         return $this->hasMany(ProductAttribute::class)->select('attribute_id','value')->distinct();
     }
 
+    public function products()
+    {
+        return $this->belongsToMany(Product::class,'product_attributes')->withPivot('value','is_active');
+    }
+
     public function variationValues()
     {
         return $this->hasMany(ProductVariation::class)->select('attribute_id','value')->distinct();

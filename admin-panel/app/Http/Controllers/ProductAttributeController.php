@@ -42,7 +42,7 @@ class ProductAttributeController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(ProductAttribute $poductAttribute)
+    public function show(ProductAttribute $productAttribute)
     {
         //
     }
@@ -50,7 +50,7 @@ class ProductAttributeController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(ProductAttribute $poductAttribute)
+    public function edit(ProductAttribute $productAttribute)
     {
         //
     }
@@ -58,15 +58,16 @@ class ProductAttributeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update($attributeIds)
+    public function update($attributes)
     {
         //
-        foreach ($attributeIds as $key=>$value){
-           $productAttribute=ProductAttribute::query()->findOrFail($key);
-            $productAttribute->update([
-                'value'=>$value
-            ]);
-        }
+      foreach ($attributes as $attr){
+          $productAttribute = ProductAttribute::query()->findOrFail($attr['id']);
+          $productAttribute->update([
+              'value'=>$attr['value']
+          ]);
+
+      }
     }
 
     /**
@@ -75,5 +76,17 @@ class ProductAttributeController extends Controller
     public function destroy(ProductAttribute $poductAttribute)
     {
         //
+    }
+
+    public function change($attributes,$product)
+    {
+        ProductAttribute::query()->where('product_id','=',$product->id)->delete();
+        foreach ($attributes as $attribute){
+            ProductAttribute::query()->create([
+               'product_id'=>$product->id,
+               'attribute_id'=>$attribute['id'],
+               'value'=>$attribute['value']
+            ]);
+        }
     }
 }

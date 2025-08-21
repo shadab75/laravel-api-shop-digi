@@ -15,10 +15,15 @@ class ProductResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+          'id'=>$this->id,
           'name'=>$this->name,
-          'brand_id'=>$this->brand_id,
-          'category'=>$this->whenLoaded('category'),
-          'is_active'=>$this->is_active
+          'brand'=>new BrandResource($this->whenLoaded('brand')),
+          'category'=>new CategoryResource($this->whenLoaded('category')),
+          'attributes'=>ProductAttributeResource::collection($this->whenLoaded('attributes')),
+          'variations'=>VariationResource::collection($this->whenLoaded('variations')),
+          'primary_image'=>url(env('PRODUCT_IMAGES_UPLOAD_PATH').$this->primary_image),
+          'images'=>ProductImageResource::collection($this->whenLoaded('images')),
+          'is_active'=>$this->is_active,
         ];
     }
 }

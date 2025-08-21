@@ -40,4 +40,9 @@ class Category extends Model
     public function attributes(){
         return $this->belongsToMany(Attribute::class, 'attribute_category')->withPivot('is_filter', 'is_variation');
     }
+
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
 }

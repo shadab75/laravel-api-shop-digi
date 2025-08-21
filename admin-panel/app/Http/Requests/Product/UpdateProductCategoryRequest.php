@@ -4,7 +4,7 @@ namespace App\Http\Requests\Product;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreProductRequest extends FormRequest
+class UpdateProductCategoryRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,23 +22,16 @@ class StoreProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name'=>'required|string|max:255|unique:products,name',
-            'brand_id'=>'required|integer',
-            'is_active'=>'integer|integer',
-            'tag_ids'=>'required|array',
-            'tag_ids.*'=>'exists:tags,id',
-            'description'=>'required|string|max:600',
-            'primary_image'=>'image|required|mimes:jpg,jpeg,png,svg|max:2048',
-            'images.*' => 'image|required|mimes:jpg,jpeg,png,svg|max:2048',
-            'category_id'=>'required|integer',
-            'delivery_amount'=>'required|integer',
+            //
+            'category_id' => 'required',
             'attributes' => 'required|array',
             'attributes.*.id' => 'required|exists:attributes,id',
             'attributes.*.value' => 'required|string|max:255',
-            'variation_values' => 'required|array',
+            'delivery_amount'=>'required|integer',
+            'variation_values' => 'required',
             'variation_values.*.value' => 'required|string',
             'variation_values.*.price' => 'required|string',
-            'variation_values.*.quantity' => 'required|integer',
+            'variation_values.*.quantity' => 'required|integer'
         ];
     }
 }
